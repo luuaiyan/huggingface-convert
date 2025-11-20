@@ -3,149 +3,522 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>纯前端图片格式转换</title>
+    <title>图片格式转换器 | 丰富示例</title>
     <style>
-        /* CSS 样式 */
+        /* --- 🎨 WordPress 风格 CSS --- */
+        :root {
+            --primary-color: #0073aa; /* WordPress Blue */
+            --secondary-color: #2c3e50;
+            --background-light: #f0f2f5; /* 更柔和的背景色 */
+            --card-background: #ffffff;
+            --border-color: #e0e0e0;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            --header-gradient: linear-gradient(135deg, #0073aa 0%, #0096c7 100%); /* 头部渐变 */
+        }
+
+        html {
+            height: 100%; /* 确保html高度填充，以便body背景覆盖 */
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 0;
-            background-color: #f4f7f9;
-            color: #333;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+            margin: 0;
+            padding: 40px 0;
+            background-color: var(--background-light);
+            color: var(--secondary-color);
+            min-height: 100vh; /* 确保body至少占满视口高度 */
+            
+            /* --- 背景图片和渐变 --- */
+            background-image: url('https://source.unsplash.com/random/1920x1080/?abstract,geometric') , linear-gradient(180deg, #f0f2f5 0%, #e3e6eb 100%);
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed; /* 固定背景图 */
+            position: relative; /* 用于叠加背景图的半透明层 */
         }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 30px;
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+
+        /* 背景图上叠加一层半透明层，增加可读性 */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.8); /* 半透明白色 */
+            z-index: -1; /* 确保在内容下方 */
         }
-        h1 {
+
+        .header {
             text-align: center;
-            color: #007bff;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+            background: var(--header-gradient);
+            padding: 30px 20px;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
-        .section {
-            margin-bottom: 20px;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
+
+        .header p {
+            font-size: 1.2em;
+            font-weight: 300;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1000px; /* 增加容器宽度 */
+            margin: 0 auto;
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap; /* 允许换行 */
+        }
+
+        .card {
+            background-color: var(--card-background);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            flex: 1; 
+            min-width: 300px; /* 确保卡片不会太窄 */
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .card h2 {
+            font-size: 1.6em; /* 略微增大标题 */
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .card h2::after { /* 小装饰 */
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+
         label {
             display: block;
             margin-bottom: 8px;
-            font-weight: bold;
+            font-weight: 600;
+            color: var(--secondary-color);
         }
-        input[type="file"], select, button {
+        
+        input[type="file"], select, input[type="number"] {
             width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
+            padding: 12px;
+            margin-bottom: 18px; /* 增加间距 */
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
             box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 4px;
             font-size: 16px;
+            background-color: #fafafa;
+            transition: border-color 0.2s ease;
         }
-        button {
-            background-color: #007bff;
+
+        input[type="file"]:focus, select:focus, input[type="number"]:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0, 115, 170, 0.2);
+        }
+        
+        input[type="file"] {
+            border: 2px dashed #9bc3e6; /* 更活泼的虚线边框 */
+            padding: 20px;
+            cursor: pointer;
+            background-color: #f8fbff;
+            text-align: center;
+        }
+
+        .button-primary {
+            width: 100%;
+            padding: 15px;
+            margin-top: 25px; /* 增加按钮上方间距 */
+            background-image: var(--header-gradient); /* 与头部渐变一致 */
             color: white;
             border: none;
+            border-radius: 6px;
             cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: var(--transition);
+            box-shadow: 0 4px 8px rgba(0, 115, 170, 0.3);
+        }
+
+        .button-primary:hover:not(:disabled) {
+            background-image: linear-gradient(135deg, #005a87 0%, #0073aa 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 115, 170, 0.4);
+        }
+        
+        .button-primary:disabled {
+            background-image: none;
+            background-color: #b0c4de;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .button-secondary { /* 示例区的按钮 */
+            padding: 10px 15px;
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-right: 10px;
             transition: background-color 0.3s ease;
         }
-        button:hover:not(:disabled) {
-            background-color: #0056b3;
+        .button-secondary:hover {
+            background-color: #5a6268;
         }
-        button:disabled {
-            background-color: #a0c9ff;
-            cursor: not-allowed;
-        }
-        #preview {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin-top: 10px;
-            border: 1px dashed #ccc;
-            border-radius: 4px;
-        }
+
+        /* --- 提示和错误信息 --- */
         .hint {
-            font-size: 0.9em;
-            color: #666;
-            margin-top: -5px;
-            margin-bottom: 15px;
+            font-size: 0.85em;
+            color: #777;
+            margin-top: -10px;
+            margin-bottom: 20px;
+            line-height: 1.5;
         }
         .error-message {
-            color: red;
+            color: #d9534f;
+            background-color: #fdecea; /* 更柔和的背景 */
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            margin-top: 10px;
+            border: 1px solid #d9534f;
+            display: none;
+        }
+        .error-message.show {
+            display: block;
+        }
+        .success-message {
+            color: #5cb85c;
+            background-color: #eaf7ea;
+            padding: 12px;
+            border-radius: 6px;
             font-weight: bold;
             margin-top: 10px;
+            border: 1px solid #5cb85c;
+        }
+
+        /* --- 预览区域 --- */
+        #preview-container {
+            text-align: center;
+            margin-top: 15px;
+            border: 2px dashed #aed6f1; /* 预览区边框 */
+            border-radius: 8px;
+            padding: 15px;
+            min-height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #fdfdfd;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05); /* 内阴影 */
+        }
+
+        #preview {
+            max-width: 100%;
+            max-height: 250px; /* 调整最大高度 */
+            height: auto;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: none;
+            object-fit: contain; /* 保持图片比例 */
+        }
+        #preview-placeholder {
+            color: #a0a0a0;
+            font-style: italic;
+        }
+
+        /* --- 示例区样式 --- */
+        .example-section {
+            background-color: var(--card-background);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            margin-top: 30px; /* 与上方卡片间距 */
+            width: 100%;
+        }
+        .example-section h2 {
+            font-size: 1.6em;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            position: relative;
+        }
+        .example-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+
+        .example-content {
+            display: flex;
+            flex-direction: column; /* 示例图和按钮垂直排列 */
+            gap: 20px;
+            align-items: center;
+        }
+
+        .example-image-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            gap: 20px; /* 原始图和转换图之间的间距 */
+            flex-wrap: wrap;
+        }
+
+        .example-image-box {
+            text-align: center;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            flex: 1; /* 示例图盒平分空间 */
+            min-width: 250px; /* 确保不至于太小 */
+        }
+
+        .example-image-box img {
+            max-width: 100%;
+            max-height: 200px;
+            height: auto;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            object-fit: contain;
+        }
+
+        .example-image-box p {
+            font-size: 0.9em;
+            color: #555;
+            font-weight: 600;
+        }
+
+        .example-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 900px) {
+            .container {
+                flex-direction: column;
+                padding: 0 20px;
+            }
+            .header h1 {
+                font-size: 2.2em;
+            }
+            .header p {
+                font-size: 1em;
+            }
+            .example-image-wrapper {
+                flex-direction: column;
+            }
+            .card {
+                min-width: unset; /* 在小屏幕上取消最小宽度限制 */
+            }
         }
     </style>
 </head>
 <body>
+    <div class="header">
+        <h1>✨ 智能图片格式转换工具</h1>
+        <p>告别复杂的软件，在这里您可以安全、高效地转换图片格式，支持 JPEG, PNG, WebP。</p>
+    </div>
+
     <div class="container">
-        <h1>纯前端图片格式转换器</h1>
-
-        <div class="section">
-            <h2>1. 选择图片文件</h2>
+        <div class="card">
+            <h2>1. 上传与配置</h2>
+            
+            <label for="imageInput">选择您的图片文件 (.jpg, .png, .gif...)</label>
             <input type="file" id="imageInput" accept="image/*">
-            <div class="hint">支持 JPG, PNG, GIF 等常见图片格式。</div>
+            <div class="hint">支持浏览器可读的常见图片格式（如 JPG, PNG, GIF, BMP, SVG 等），目标格式为 JPG / PNG / WebP。</div>
             <div class="error-message" id="inputError"></div>
-        </div>
-
-        <div class="section">
-            <h2>2. 预览与设置</h2>
+            
             <label for="formatSelect">选择目标格式:</label>
             <select id="formatSelect">
-                <option value="image/jpeg">JPEG (.jpg)</option>
-                <option value="image/png">PNG (.png)</option>
-                <option value="image/webp">WebP (.webp)</option>
+                <option value="image/jpeg">JPEG (.jpg) - 有损压缩，文件小</option>
+                <option value="image/png">PNG (.png) - 无损透明背景，质量高</option>
+                <option value="image/webp">WebP (.webp) - 现代高效格式，兼顾压缩与质量</option>
             </select>
             
-            <label for="qualityInput" id="qualityLabel">JPEG/WebP 质量 (0.1 - 1.0):</label>
-            <input type="number" id="qualityInput" min="0.1" max="1.0" step="0.1" value="0.9">
-
-            <p>**图片预览:**</p>
-            <img id="preview" src="" alt="图片预览" style="display: none;">
+            <label for="qualityInput" id="qualityLabel" style="display: block;">JPEG/WebP 质量 (0.1 - 1.0):</label>
+            <input type="number" id="qualityInput" min="0.1" max="1.0" step="0.1" value="0.9" style="display: block;">
         </div>
 
-        <div class="section">
-            <h2>3. 转换并下载</h2>
-            <button id="convertButton" disabled>转换并下载图片</button>
+        <div class="card">
+            <h2>2. 预览与操作</h2>
+            
+            <label>实时预览:</label>
+            <div id="preview-container">
+                <p id="preview-placeholder">请在左侧上传图片，此处将显示预览。</p>
+                <img id="preview" src="" alt="图片预览">
+            </div>
+
+            <button id="convertButton" class="button-primary" disabled>
+                🚀 转换并下载图片
+            </button>
+            
             <div class="error-message" id="conversionError"></div>
+            <div class="success-message" id="conversionSuccess"></div>
         </div>
         
+        <div class="example-section">
+            <h2>3. 转换效果示例</h2>
+            <p class="hint">点击下方按钮，可以查看一张示例图片转换成不同格式后的效果。**此示例图不会下载。**</p>
+            <div class="example-content">
+                <div class="example-image-wrapper">
+                    <div class="example-image-box">
+                        <p><strong>原始图片</strong> (PNG, 带透明)</p>
+                        <img id="exampleOriginal" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsAQMAAABo96cIAAAABlBMVEX///8AAABVwtN+AAAAAXRSTlMAQObYZgAAAFRJREFUWMO1wUEBAAAAwiB6/wXhKAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYAAAYC+0J0AAMoU+P0AAAAASUVORK5CYII=" alt="示例原图">
+                    </div>
+                    <div class="example-image-box">
+                        <p><strong>转换结果</strong> (<span id="exampleResultFormat">请选择格式</span>)</p>
+                        <img id="exampleResult" src="" alt="转换结果" style="display: none;">
+                        <p id="exampleResultSize" style="display: none;"></p>
+                    </div>
+                </div>
+                <div class="example-buttons">
+                    <button class="button-secondary" data-format="image/jpeg" data-quality="0.7">转换为 JPEG (中质量)</button>
+                    <button class="button-secondary" data-format="image/png">转换为 PNG (无损)</button>
+                    <button class="button-secondary" data-format="image/webp" data-quality="0.8">转换为 WebP (高效率)</button>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <script>
-        // JavaScript 脚本
+        // --- 主要转换功能 DOM 元素 ---
         const imageInput = document.getElementById('imageInput');
         const formatSelect = document.getElementById('formatSelect');
         const qualityInput = document.getElementById('qualityInput');
         const qualityLabel = document.getElementById('qualityLabel');
         const convertButton = document.getElementById('convertButton');
         const preview = document.getElementById('preview');
+        const previewPlaceholder = document.getElementById('preview-placeholder');
         const inputError = document.getElementById('inputError');
         const conversionError = document.getElementById('conversionError');
-        const canvas = document.createElement('canvas'); // 用于转换的 Canvas 元素
+        const conversionSuccess = document.getElementById('conversionSuccess');
+        const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
-        let currentImage = null; // 存储已加载的 Image 对象
+        let currentImage = null; // 用户上传的图片对象
 
-        // --- 监听事件 ---
+        // --- 示例功能 DOM 元素 ---
+        const exampleOriginal = document.getElementById('exampleOriginal');
+        const exampleResult = document.getElementById('exampleResult');
+        const exampleResultFormat = document.getElementById('exampleResultFormat');
+        const exampleResultSize = document.getElementById('exampleResultSize');
+        const exampleButtons = document.querySelectorAll('.example-buttons .button-secondary');
+        const exampleCanvas = document.createElement('canvas'); // 独立的Canvas用于示例
+        const exampleCtx = exampleCanvas.getContext('2d');
+        let exampleImage = new Image(); // 示例图片对象
+        exampleImage.crossOrigin = "Anonymous"; // 允许加载跨域图片（如果需要）
+        exampleImage.src = exampleOriginal.src; // 使用 Base64 嵌入图片，无需跨域
 
-        // 1. 文件选择事件
+        // --- 辅助函数：显示/隐藏错误信息 ---
+        function displayMessage(element, message, type = 'error') {
+            element.textContent = message;
+            element.className = `${type}-message show`; // 添加type类
+        }
+        function clearMessages(type = 'all') {
+            if (type === 'all' || type === 'input') {
+                inputError.textContent = '';
+                inputError.classList.remove('show');
+            }
+            if (type === 'all' || type === 'conversion') {
+                conversionError.textContent = '';
+                conversionError.classList.remove('show');
+                conversionSuccess.textContent = ''; // 清空成功信息
+                conversionSuccess.classList.remove('show');
+            }
+        }
+
+        // --- 核心转换逻辑函数 ---
+        async function convertAndGetImageData(imageObject, targetFormat, quality) {
+            return new Promise((resolve, reject) => {
+                if (!imageObject || !imageObject.naturalWidth) {
+                    return reject(new Error("无效的图片对象。"));
+                }
+
+                canvas.width = imageObject.naturalWidth;
+                canvas.height = imageObject.naturalHeight;
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                // 确保 JPEG 和 WebP 背景不透明
+                if (targetFormat === 'image/jpeg' || targetFormat === 'image/webp') {
+                    ctx.fillStyle = "#FFFFFF"; // 白色背景
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                }
+                ctx.drawImage(imageObject, 0, 0);
+
+                try {
+                    const dataURL = canvas.toDataURL(targetFormat, quality);
+                    resolve(dataURL);
+                } catch (e) {
+                    reject(new Error(`图片转换失败: ${e.message}`));
+                }
+            });
+        }
+
+        // --- 主要功能事件监听 ---
+
+        // 1. 格式选择事件 (控制质量输入框的显示)
+        formatSelect.addEventListener('change', function() {
+            const format = formatSelect.value;
+            const isLossy = format === 'image/jpeg' || format === 'image/webp';
+            
+            qualityInput.style.display = isLossy ? 'block' : 'none';
+            qualityLabel.style.display = isLossy ? 'block' : 'none';
+            if (isLossy) {
+                qualityLabel.textContent = (format === 'image/jpeg' ? 'JPEG' : 'WebP') + ' 质量 (0.1 - 1.0):';
+            }
+            clearMessages('conversion'); // 改变格式时清空转换信息
+        });
+
+        // 2. 文件选择事件
         imageInput.addEventListener('change', function(event) {
-            inputError.textContent = '';
-            conversionError.textContent = '';
+            clearMessages();
             convertButton.disabled = true;
 
             const file = event.target.files[0];
             if (!file) {
                 preview.style.display = 'none';
+                previewPlaceholder.style.display = 'block';
                 return;
             }
 
             if (!file.type.startsWith('image/')) {
-                inputError.textContent = '错误：请选择一个有效的图片文件。';
+                displayMessage(inputError, '错误：请选择一个有效的图片文件。');
+                preview.style.display = 'none';
+                previewPlaceholder.style.display = 'block';
                 return;
             }
 
@@ -153,19 +526,16 @@
             reader.onload = function(e) {
                 const img = new Image();
                 img.onload = function() {
-                    // 存储加载的 Image 对象
                     currentImage = img; 
-                    
-                    // 1. 显示预览
                     preview.src = e.target.result;
                     preview.style.display = 'block';
-
-                    // 2. 启用转换按钮
+                    previewPlaceholder.style.display = 'none';
                     convertButton.disabled = false;
                 };
                 img.onerror = function() {
-                    inputError.textContent = '错误：无法加载图片。';
+                    displayMessage(inputError, '错误：无法加载图片，文件可能已损坏。');
                     preview.style.display = 'none';
+                    previewPlaceholder.style.display = 'block';
                     currentImage = null;
                 };
                 img.src = e.target.result;
@@ -173,88 +543,114 @@
             reader.readAsDataURL(file);
         });
 
-        // 2. 格式选择事件 (控制质量输入框的显示)
-        formatSelect.addEventListener('change', function() {
-            const format = formatSelect.value;
-            // 只有 JPEG 和 WebP 需要质量设置
-            if (format === 'image/jpeg' || format === 'image/webp') {
-                qualityInput.style.display = 'block';
-                qualityLabel.style.display = 'block';
-                qualityLabel.textContent = (format === 'image/jpeg' ? 'JPEG' : 'WebP') + ' 质量 (0.1 - 1.0):';
-            } else {
-                qualityInput.style.display = 'none';
-                qualityLabel.style.display = 'none';
-            }
-        });
-
         // 3. 转换按钮点击事件
-        convertButton.addEventListener('click', function() {
+        convertButton.addEventListener('click', async function() {
             if (!currentImage) {
-                conversionError.textContent = '请先上传一张图片。';
+                displayMessage(conversionError, '请先上传一张图片。');
                 return;
             }
 
-            // 获取用户选择的格式和质量
             const targetFormat = formatSelect.value;
             let quality = parseFloat(qualityInput.value);
-
-            // 检查质量值是否有效
-            if ((targetFormat === 'image/jpeg' || targetFormat === 'image/webp') && (isNaN(quality) || quality < 0.1 || quality > 1.0)) {
-                conversionError.textContent = '质量值必须在 0.1 到 1.0 之间。';
+            
+            const isLossy = targetFormat === 'image/jpeg' || targetFormat === 'image/webp';
+            if (isLossy && (isNaN(quality) || quality < 0.1 || quality > 1.0)) {
+                displayMessage(conversionError, '质量值必须在 0.1 到 1.0 之间。');
                 return;
             }
-            if (targetFormat === 'image/png') {
-                // PNG 忽略质量参数
+            if (!isLossy) {
                 quality = undefined; 
             }
             
-            conversionError.textContent = '正在转换...';
+            clearMessages('conversion');
+            displayMessage(conversionSuccess, '正在转换... 请稍候。', 'success');
             convertButton.disabled = true;
 
-            // 调用核心转换函数
             try {
-                // 设置 Canvas 尺寸与图片一致
-                canvas.width = currentImage.naturalWidth;
-                canvas.height = currentImage.naturalHeight;
-
-                // 将图片绘制到 Canvas 上
-                ctx.clearRect(0, 0, canvas.width, canvas.height); // 清空 Canvas
-                ctx.drawImage(currentImage, 0, 0);
-
-                // 使用 toDataURL 进行格式转换和压缩
-                const dataURL = canvas.toDataURL(targetFormat, quality);
+                const dataURL = await convertAndGetImageData(currentImage, targetFormat, quality);
                 
-                // --- 下载文件 ---
+                // 下载文件
                 const a = document.createElement('a');
                 a.href = dataURL;
                 
-                // 构造文件名
                 const baseName = imageInput.files[0].name.split('.').slice(0, -1).join('.');
-                let extension = '';
-                if (targetFormat === 'image/jpeg') extension = 'jpg';
-                else if (targetFormat === 'image/png') extension = 'png';
-                else if (targetFormat === 'image/webp') extension = 'webp';
+                let extension = targetFormat.split('/')[1].replace('jpeg', 'jpg');
                 
-                a.download = `${baseName}_converted.${extension}`;
+                a.download = `${baseName}-converted.${extension}`;
                 
-                // 触发点击下载
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
 
-                conversionError.textContent = '转换成功！文件已开始下载。';
+                displayMessage(conversionSuccess, `转换成功！文件已开始下载为 .${extension} 格式。`, 'success');
 
             } catch (e) {
                 console.error('转换失败:', e);
-                conversionError.textContent = `转换失败：不支持的格式或内部错误 (${e.message})。`;
+                displayMessage(conversionError, `转换失败：${e.message}。请检查图片是否有效或尝试其他格式。`);
+            } finally {
+                convertButton.disabled = false;
             }
-            
-            convertButton.disabled = false;
         });
 
-        // 初始化：根据默认选择设置质量输入框
+        // --- 示例功能事件监听 ---
+        exampleButtons.forEach(button => {
+            button.addEventListener('click', async function() {
+                const targetFormat = this.dataset.format;
+                const quality = parseFloat(this.dataset.quality);
+                
+                // 使用独立的Canvas进行示例转换
+                exampleCanvas.width = exampleImage.naturalWidth;
+                exampleCanvas.height = exampleImage.naturalHeight;
+                exampleCtx.clearRect(0, 0, exampleCanvas.width, exampleCanvas.height);
+                
+                // 如果是JPG或WEBP，手动填充白色背景处理透明度
+                if (targetFormat === 'image/jpeg' || targetFormat === 'image/webp') {
+                    exampleCtx.fillStyle = "#FFFFFF";
+                    exampleCtx.fillRect(0, 0, exampleCanvas.width, exampleCanvas.height);
+                }
+                exampleCtx.drawImage(exampleImage, 0, 0);
+
+                try {
+                    const dataURL = exampleCanvas.toDataURL(targetFormat, quality);
+                    exampleResult.src = dataURL;
+                    exampleResult.style.display = 'block';
+                    
+                    let formatName = '';
+                    if (targetFormat === 'image/jpeg') formatName = 'JPEG';
+                    else if (targetFormat === 'image/png') formatName = 'PNG';
+                    else if (targetFormat === 'image/webp') formatName = 'WebP';
+                    
+                    exampleResultFormat.textContent = formatName;
+                    
+                    // 计算并显示文件大小
+                    const base64Length = dataURL.length - (dataURL.indexOf(',') + 1);
+                    const fileSizeBytes = Math.ceil(base64Length / 4 * 3); // 估算字节数
+                    exampleResultSize.textContent = `大小:约 ${ (fileSizeBytes / 1024).toFixed(2) } KB`;
+                    exampleResultSize.style.display = 'block';
+
+                } catch (e) {
+                    console.error('示例转换失败:', e);
+                    exampleResultFormat.textContent = '转换失败';
+                    exampleResult.style.display = 'none';
+                    exampleResultSize.style.display = 'none';
+                }
+            });
+        });
+
+        // --- 初始化 ---
         document.addEventListener('DOMContentLoaded', function() {
-            formatSelect.dispatchEvent(new Event('change'));
+            formatSelect.dispatchEvent(new Event('change')); // 根据默认选择设置质量输入框
+
+            // 确保示例图片加载完毕后再进行操作
+            exampleImage.onload = function() {
+                // 自动点击第一个示例按钮，显示默认转换效果
+                if (exampleButtons.length > 0) {
+                    exampleButtons[0].click(); 
+                }
+            };
+            exampleImage.onerror = function() {
+                console.error("示例图片加载失败！");
+            };
         });
     </script>
 </body>
